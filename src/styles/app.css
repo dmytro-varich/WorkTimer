@@ -344,6 +344,7 @@ details[open] .carret {
 
 .lang-switch{
   position: absolute;
+  top: -5px;
   right: 16px;
 }
 .lang-switch select{

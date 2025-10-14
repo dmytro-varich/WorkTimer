@@ -1,5 +1,7 @@
+// src/main.js
 import { state, startOrResume, pause, stop, reset, clearToday, clearAll } from './state/session.js';
-import { updateUI, summaryHuman, renderHistory, historyPrev, historyNext } from './ui/render.js';
+import { updateUI, summaryHuman, historyPrev, historyNext } from './ui/render.js';
+import { initI18n, getLang, setLang, onLangChange, applyI18n /*, t*/ } from './i18n/lang.js';
 import { modal } from './ui/modal.js';
 
 let rafId = null;
@@ -11,6 +13,23 @@ function tick() {
 }
 
 function boot() {
+  // ---- i18n: инициализация и первичная разметка текстов
+  initI18n();
+  applyI18n(document);
+
+  // если есть селект языка — выставим и подпишемся
+  const langSel = document.getElementById('langSelect');
+  if (langSel) langSel.value = getLang();
+  langSel?.addEventListener('change', (e) => setLang(e.target.value));
+
+  // при смене языка: обновить тексты в DOM + перерендерить UI/историю
+  onLangChange(() => {
+    applyI18n(document);                // проставит data-i18n тексты
+    try { modal.init(); } catch {}       // обновит подписи в модалке, если завязаны на i18n
+    updateUI({ withHistory: true });     // чтобы перерисовать кнопки/заголовки/историю
+  });
+  // ---- конец i18n-блока
+
   modal.init();
   updateUI({ withHistory: true }); // отрисуем всё, включая history (details+пагинация)
 
@@ -48,6 +67,7 @@ function boot() {
   const clearBtn = document.getElementById('clearTodayBtn');
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
+      // При желании локализуй это через t('confirm_clear_today')
       const ok = confirm('Clear today\'s history and reset today\'s time?');
       if (!ok) return;
       cancelAnimationFrame(rafId); rafId = null;
@@ -60,6 +80,7 @@ function boot() {
   const clearAllBtn = document.getElementById('clearAllBtn');
   if (clearAllBtn) {
     clearAllBtn.addEventListener('click', () => {
+      // При желании локализуй это через t('confirm_clear_all')
       const ok = confirm('Delete ALL history and reset current session?');
       if (!ok) return;
       cancelAnimationFrame(rafId); rafId = null;
@@ -68,32 +89,33 @@ function boot() {
     });
   }
 
-  // Пагинация стрелками внутри выпадающего списка (верх и низ)
+  // Пагинация кнопками
   document.addEventListener('click', (e) => {
     const id = e.target?.id;
     if (id === 'histPrev') historyPrev();
     if (id === 'histNext') historyNext();
   });
 
-
-  // Дополнительно: листание стрелками с клавиатуры
+  // Листание стрелками
   document.addEventListener('keydown', (e) => {
     const detailsOpen = document.getElementById('histDetails')?.open;
     if (!detailsOpen) return;
-    if (e.key === 'ArrowLeft') { historyPrev(); }
-    if (e.key === 'ArrowRight') { historyNext(); }
+    if (e.key === 'ArrowLeft')  historyPrev();
+    if (e.key === 'ArrowRight') historyNext();
   });
 
   // Клик по записи истории -> модалка с отчётом
   const historyRoot = document.getElementById('history');
-  historyRoot.addEventListener('click', (e) => {
-    const item = e.target.closest('.history-item');
-    if (!item) return;
-    const entry = (state.history || []).find(h => h.from === item.dataset.id);
-    if (!entry) return;
-    const { display, full } = summaryHuman(entry, 5);
-    modal.open(display, full);
-  });
+  if (historyRoot) {
+    historyRoot.addEventListener('click', (e) => {
+      const item = e.target.closest('.history-item');
+      if (!item) return;
+      const entry = (state.history || []).find(h => String(h.from) === String(item.dataset.id));
+      if (!entry) return;
+      const { display, full } = summaryHuman(entry, 5);
+      modal.open(display, full);
+    });
+  }
 
   if (state.current.state === 'running') tick();
 }

@@ -4,7 +4,6 @@
     --text: #e8e8ea;
     --muted: #a7aab3;
     --accent: #4d79ff;
-    --danger: #ff5c5c;
     --ring: #27314a;
     --btn: #1e2127;
     --btn-hover: #242832;
@@ -38,8 +37,12 @@ body {
     justify-content: center;
     align-items: flex-start;
     padding-top: 24px;
+    padding-top: clamp(12px, 3vh, 24px);
 }
-
+body { min-height: 100vh; }        /* фолбэк для старых браузеров */
+@supports (height: 1svh) {
+  body { min-height: 100svh; }     /* корректная высота на iOS/Android */
+}
 
 .hidden {
     display: none

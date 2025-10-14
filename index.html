@@ -1,64 +1,100 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>WorkTimer</title>
-    <link rel="icon" href="./assets/icon.svg?" type="image/svg+xml" />
-    <link rel="stylesheet" href="./src/styles/base.css" />
-    <link rel="stylesheet" href="./src/styles/app.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WorkTimer</title>
+  <link rel="icon" href="./assets/icon.svg?" type="image/svg+xml" />
+  <link rel="stylesheet" href="./src/styles/base.css" />
+  <link rel="stylesheet" href="./src/styles/app.css" />
 </head>
-
 <body>
-    <main class="app" role="application" aria-label="WorkTimer">
-        <section class="top">
-            <p class="title">WorkTimer</p>
-            <!-- language switch -->
-            <div class="lang-switch">
-            <select id="langSelect" aria-label="Language">
-                <option value="en">EN</option>
-                <option value="uk">UA</option>
-            </select>
-            </div>
-            <div class="time" id="display">00:00:00</div>
-            <div class="subrow">
-                <span class="pill"><span id="stateDot">●</span> <span id="stateText">Idle</span></span>
-            </div>
-            <div class="controls">
-                <button id="playPauseBtn" class="primary" aria-label="Play">▶ Play</button>
-                <button id="stopBtn" class="danger" aria-label="Stop">■ Stop</button>
-                <button id="resetBtn" aria-label="Reset">↺ Reset</button>
-                <div class="actions-row">
-                    <button id="clearTodayBtn" class="ghost warn" aria-label="Clear today">✖ Clear today</button>
-                    <button id="clearAllBtn" class="ghost danger" aria-label="Clear all">🗑 Clear all</button>
-                </div>
+  <main class="app" role="application" aria-label="WorkTimer">
+    <section class="top">
+      <p class="title">WorkTimer</p>
 
-            </div>
-            <div class="row">
-                <div class="pill">Today: <span class="badge" id="todayTotal">00:00:00</span></div>
-                <div class="pill">Intervals: <span class="badge" id="intervalCount">0</span></div>
-            </div>
-        </section>
+      <!-- language switch -->
+      <div class="lang-switch">
+        <label for="langSelect" class="sr-only">Language</label>
+        <select id="langSelect" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="uk">UA</option>
+        </select>
+      </div>
 
-        <section class="bottom">
-            <section class="history" id="history"></section>
-        </section>
-    </main>
+      <div class="time" id="display">00:00:00</div>
 
-    <!-- Modal -->
-    <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <div class="modal">
-            <h3 id="modalTitle">Session summary</h3>
-            <pre id="summaryText"></pre>
-            <div class="actions">
-                <button id="copyBtn" class="primary">Copy</button>
-                <button id="closeModalBtn">Close</button>
-            </div>
+      <div class="subrow">
+        <span class="pill">
+          <span id="stateDot">●</span>
+          <span id="stateText" data-i18n="idle">Idle</span>
+        </span>
+      </div>
+
+      <div class="controls">
+        <button id="playPauseBtn"
+                class="primary"
+                data-i18n="play"
+                data-i18n-attr='{"aria-label":"play"}'
+                aria-label="Play">▶️ Play</button>
+
+        <button id="stopBtn"
+                class="danger"
+                data-i18n="stop"
+                data-i18n-attr='{"aria-label":"stop"}'
+                aria-label="Stop">■ Stop</button>
+
+        <button id="resetBtn"
+                data-i18n="reset"
+                data-i18n-attr='{"aria-label":"reset"}'
+                aria-label="Reset">↺ Reset</button>
+
+        <div class="actions-row">
+          <button id="clearTodayBtn"
+                  class="ghost warn"
+                  data-i18n="clearToday"
+                  data-i18n-attr='{"aria-label":"clearToday"}'
+                  aria-label="Clear today">✖️ Clear today</button>
+
+          <button id="clearAllBtn"
+                  class="ghost danger"
+                  data-i18n="clearAll"
+                  data-i18n-attr='{"aria-label":"clearAll"}'
+                  aria-label="Clear all">🗑️ Clear all</button>
         </div>
+      </div>
+
+      <div class="row">
+        <div class="pill">
+          <span id="todayLabel" data-i18n="today">Today</span>:
+          <span class="badge" id="todayTotal">00:00:00</span>
+        </div>
+        <div class="pill">
+          <span id="intervalsLabel" data-i18n="intervals">Intervals</span>:
+          <span class="badge" id="intervalCount">0</span>
+        </div>
+      </div>
+
+    </section>
+
+    <section class="bottom">
+      <section class="history" id="history"></section>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <h3 id="modalTitle" data-i18n="session_summary">Session summary</h3>
+      <pre id="summaryText"></pre>
+      <div class="actions">
+        <button id="copyBtn" class="primary" data-i18n="copy">Copy</button>
+        <button id="closeModalBtn" data-i18n="close">Close</button>
+      </div>
     </div>
+  </div>
 
-    <script type="module" src="./src/main.js" defer></script>
+  <!-- один модуль подключает всё остальное -->
+  <script type="module" src="./src/main.js" defer></script>
 </body>
-
 </html>

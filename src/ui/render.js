@@ -1,10 +1,12 @@
+// src/ui/render.js
 import { fmtHMS, fmtTime, fmtDate } from '../utils/time.js';
 import { state, sumIntervals } from '../state/session.js';
+import { t } from '../i18n/lang.js';
 
 const el = (id) => document.getElementById(id);
 
 /* =========================
-   Человеческий формат отчёта
+   Человеческий формат отчёта (i18n)
    ========================= */
 function humanDuration(ms) {
   const s = Math.floor(ms / 1000);
@@ -12,9 +14,10 @@ function humanDuration(ms) {
   const m = Math.floor((s % 3600) / 60);
   const sec = s % 60;
   const parts = [];
-  if (h) parts.push(`${h} hour`);
-  if (m) parts.push(`${m} minute`);
-  parts.push(`${sec} s`);
+  if (h) parts.push(t('human_h', h));
+  if (m) parts.push(t('human_m', m));
+  // показываем секунды только если нет часов и минут (как раньше)
+  if (!h && !m) parts.push(t('human_s', sec));
   return parts.join(' ');
 }
 
@@ -34,13 +37,13 @@ export function summaryHuman(entry, limit = 5) {
     `  ${String(i + 1).padStart(2, '0')}) ${fmtTime(new Date(it.start))}–${fmtTime(new Date(it.end))}`
   );
 
-  const head = `${dd} — Worked ${total} (from ${from} to ${to}).\n\nIntervals:\n`;
+  const head = `${t('worked_head', { date: dd, total, from, to })}\n\n${t('intervals_title')}\n`;
   const full = head + linesAll.join('\n');
 
   let display = full;
   if (entry.intervals.length > limit) {
     const rest = entry.intervals.length - limit;
-    display = head + linesAll.slice(0, limit).join('\n') + `\n\n  …${rest} more`;
+    display = head + linesAll.slice(0, limit).join('\n') + `\n\n  ${t('more', rest)}`;
   }
 
   return { display, full };
@@ -57,10 +60,10 @@ export function updateUI({ withHistory = false } = {}) {
   el('intervalCount').textContent = (current.intervals?.length ?? 0).toString();
 
   const map = {
-    idle:   { text:'Idle',    color:'#a7aab3', btn:'▶ Play' },
-    running:{ text:'Running', color:'#4d79ff', btn:'⏸ Pause' },
-    paused: { text:'Paused',  color:'#ffcc66', btn:'▶ Resume' },
-    stopped:{ text:'Stopped', color:'#a7aab3', btn:'▶ Play' }
+    idle:   { text: t('idle'),    color:'#a7aab3', btn: t('play')   },
+    running:{ text: t('running'), color:'#4d79ff', btn: t('pause')  },
+    paused: { text: t('paused'),  color:'#ffcc66', btn: t('resume') },
+    stopped:{ text: t('stopped'), color:'#a7aab3', btn: t('play')   }
   };
   const st = map[current.state ?? 'idle'];
   el('stateText').textContent = st.text;
@@ -71,6 +74,12 @@ export function updateUI({ withHistory = false } = {}) {
   const todayMs = (history ?? []).filter(h => h.date === today)
     .reduce((acc, h) => acc + h.totalMs, 0) + (current.day === today ? ms : 0);
   el('todayTotal').textContent = fmtHMS(todayMs);
+
+  // Если какие-то подписи статичны и идут из JS:
+  const todayLabel = el('todayLabel');
+  if (todayLabel) todayLabel.textContent = t('today');
+  const intervalsLabel = el('intervalsLabel');
+  if (intervalsLabel) intervalsLabel.textContent = t('intervals');
 
   renderCurrentIntervals();
   if (withHistory) renderHistory(); // теперь рендерим details-версию
@@ -129,7 +138,7 @@ export function renderHistory() {
     <details ${wasOpen ? 'open' : ''} id="histDetails">
       <summary>
         <span class="carret" aria-hidden="true"></span>
-        History (${total})
+        ${t('history_last', total)}
       </summary>
 
       <div class="hist-panel">
@@ -151,9 +160,9 @@ export function renderHistory() {
 
         <!-- только нижняя панель -->
         <div class="hist-controls bottom">
-          <button id="histPrev" class="ghost" ${histPage<=0?'disabled':''}>◀ Prev</button>
+          <button id="histPrev" class="ghost" ${histPage<=0?'disabled':''}>${t('prev')}</button>
           <div class="hist-page-indicator">${histPage+1}/${pages}</div>
-          <button id="histNext" class="ghost" ${histPage>=pages-1?'disabled':''}>Next ▶</button>
+          <button id="histNext" class="ghost" ${histPage>=pages-1?'disabled':''}>${t('next')}</button>
         </div>
       </div>
     </details>
@@ -184,5 +193,6 @@ export function summaryString(entry){
   const parts = entry.intervals
     .map((it,i)=>`  ${String(i+1).padStart(2,'0')}) ${fmtTime(new Date(it.start))}–${fmtTime(new Date(it.end))}`)
     .join('\n');
-  return `${entry.date} — Worked ${total} (from ${from} to ${to}).\nIntervals:\n${parts}`;
+  // Локализованный заголовок и "Intervals:"
+  return `${t('worked_head', { date: entry.date, total, from, to })}\n${t('intervals_title')}\n${parts}`;
 }
