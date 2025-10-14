@@ -1,18 +1,18 @@
 import { state, startOrResume, pause, stop, reset, clearToday, clearAll } from './state/session.js';
-import { updateUI, summaryString } from './ui/render.js';
+import { updateUI, summaryHuman, renderHistory, historyPrev, historyNext } from './ui/render.js';
 import { modal } from './ui/modal.js';
 
 let rafId = null;
 
 function tick() {
   if (state.current.state !== 'running') return;
-  updateUI({ withHistory: false }); // обновляем только цифры/статусы
+  updateUI({ withHistory: false });
   rafId = requestAnimationFrame(tick);
 }
 
 function boot() {
   modal.init();
-  updateUI({ withHistory: true }); // первичный рендер, отрисуем историю
+  updateUI({ withHistory: true }); // отрисуем всё, включая history (details+пагинация)
 
   // Play/Pause
   document.getElementById('playPauseBtn').addEventListener('click', () => {
@@ -30,13 +30,14 @@ function boot() {
   document.getElementById('stopBtn').addEventListener('click', () => {
     const entry = stop();
     if (entry) {
-      modal.open(summaryString(entry));
+      const { display, full } = summaryHuman(entry, 5); // показываем 5, копируем всё
+      modal.open(display, full);
       cancelAnimationFrame(rafId); rafId = null;
-      updateUI({ withHistory: true });
+      updateUI({ withHistory: true }); // история обновится внутри
     }
   });
 
-  // Reset (полный сброс текущей сессии)
+  // Reset
   document.getElementById('resetBtn').addEventListener('click', () => {
     reset();
     cancelAnimationFrame(rafId); rafId = null;
@@ -67,15 +68,31 @@ function boot() {
     });
   }
 
-  // Клик по истории -> открыть модалку с отчётом за выбранную сессию
+  // Пагинация стрелками внутри выпадающего списка (верх и низ)
+  document.addEventListener('click', (e) => {
+    const id = e.target?.id;
+    if (id === 'histPrev') historyPrev();
+    if (id === 'histNext') historyNext();
+  });
+
+
+  // Дополнительно: листание стрелками с клавиатуры
+  document.addEventListener('keydown', (e) => {
+    const detailsOpen = document.getElementById('histDetails')?.open;
+    if (!detailsOpen) return;
+    if (e.key === 'ArrowLeft') { historyPrev(); }
+    if (e.key === 'ArrowRight') { historyNext(); }
+  });
+
+  // Клик по записи истории -> модалка с отчётом
   const historyRoot = document.getElementById('history');
   historyRoot.addEventListener('click', (e) => {
     const item = e.target.closest('.history-item');
     if (!item) return;
-    const id = item.dataset.id; // ISO 'from' уникален для записи
-    const entry = (state.history || []).find(h => h.from === id);
+    const entry = (state.history || []).find(h => h.from === item.dataset.id);
     if (!entry) return;
-    modal.open(summaryString(entry)); // тот же формат, что и при Stop
+    const { display, full } = summaryHuman(entry, 5);
+    modal.open(display, full);
   });
 
   if (state.current.state === 'running') tick();

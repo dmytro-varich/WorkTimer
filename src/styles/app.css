@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    /* важно: контекст слоёв для .top/.bottom */
+    /* контекст слоёв для .top/.bottom */
 }
 
 /* Кнопки очистки — пополам, во всю ширину сетки controls */
@@ -93,8 +93,7 @@
 
 .history {
     margin-top: 18px;
-    border-top: 1px dashed var(--ring);
-    padding-top: 14px;
+    padding-top: 5px;
 }
 
 /* Шапка всегда поверх */
@@ -102,27 +101,20 @@
     position: sticky;
     top: 0;
     z-index: 5;
-    /* повышаем слой */
     background: var(--panel);
-    padding-bottom: 8px;
+    padding-bottom: 25px;
     border-bottom: 1px dashed var(--ring);
 }
 
-/* Внутренняя область скроллится вниз и не перекрывает шапку */
+/* Основная область без внутреннего скролла */
 .bottom {
     position: relative;
-    /* слой ниже шапки */
     z-index: 1;
-
-    /* больше не делаем внутренний скролл */
     flex: 0 0 auto;
-    /* блок просто занимает столько, сколько нужно */
     overflow: visible;
-    padding-top: 10px;
-    /* scroll-padding-top можно убрать */
-    /* чтобы sticky-элементы не уезжали под шапку */
 }
 
+/* ====== История: <details> ====== */
 details {
     background: #101216;
     border: 1px solid var(--ring);
@@ -130,20 +122,145 @@ details {
     padding: 10px 12px;
 }
 
-/* Заголовок истории «липнет» чуть ниже шапки и не перекрывает её */
 summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     position: sticky;
-    /* делаем липким внутри .bottom */
+    /* липнет при прокрутке страницы */
     top: 8px;
     /* небольшой отступ от шапки */
     z-index: 2;
-    /* ниже .top (5), выше содержимого истории */
+    /* ниже .top (5) */
     cursor: pointer;
     color: var(--muted);
     background: #101216;
+    user-select: none;
 }
 
-/* Модалка поверх всего */
+summary::-webkit-details-marker {
+    display: none;
+}
+
+/* каретка у summary */
+.carret {
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--muted);
+    border-bottom: 2px solid var(--muted);
+    transform: rotate(-45deg);
+    transition: transform .2s ease;
+}
+
+details[open] .carret {
+    transform: rotate(45deg);
+}
+
+/* панель внутри выпадашки */
+.hist-panel {
+    margin-top: 8px;
+    border-radius: 10px;
+    background: #101216;
+    padding: 8px;
+}
+
+/* верх/низ панели со стрелками — «прилипают» внутри */
+.hist-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    position: sticky;
+    top: 0;
+    /* верхняя полоса */
+    z-index: 1;
+    padding: 4px 0;
+    background: #101216;
+}
+
+.hist-controls.bottom {
+    top: auto;
+    bottom: 0;
+    /* нижняя полоса */
+}
+
+/* список записей: внутренний скролл, не уходит за экран */
+.history-list {
+    display: grid;
+    gap: 8px;
+    max-height: 50vh;
+    /* ограничиваем рост */
+    overflow: auto;
+    padding: 6px 2px;
+}
+
+/* аккуратный скроллбар (опционально) */
+.history-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background: #27314a;
+    border-radius: 8px;
+}
+
+.history-list {
+    scrollbar-width: thin;
+    scrollbar-color: #27314a transparent;
+}
+
+/* Firefox */
+
+/* элементы истории */
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    background: #0b0e15;
+    border: 1px solid var(--ring);
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform .04s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+
+.history-item:hover {
+    background: #111525;
+    border-color: #304060;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .25);
+}
+
+.history-item:active {
+    transform: translateY(1px);
+}
+
+.history-item__meta {
+    color: var(--text);
+}
+
+/* стрелки пагинации */
+#histPrev,
+#histNext,
+#histPrev2,
+#histNext2 {
+    min-width: 92px;
+}
+
+#histPrev:disabled,
+#histNext:disabled,
+#histPrev2:disabled,
+#histNext2:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* небольшой запас при прокрутке к #history */
+#history {
+    scroll-margin-top: 24px;
+}
+
+/* ====== Модалка поверх всего ====== */
 .modal-backdrop {
     position: fixed;
     inset: 0;
@@ -153,7 +270,6 @@ summary {
     justify-content: center;
     padding: 16px;
     z-index: 1000;
-    /* гарантированно над остальным */
 }
 
 .modal-backdrop.is-open {
@@ -190,29 +306,52 @@ summary {
     margin-top: 12px;
 }
 
-.history-item {
+.hist-controls {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    background: #0b0e15;
-    border: 1px solid var(--ring);
-    padding: 10px 12px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform .04s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+    justify-content: space-between;
+    gap: 8px;
+    position: sticky;
+    z-index: 1;
+    padding: 4px 0;
+    background: #101216;
 }
 
-.history-item:hover {
-    background: #111525;
-    border-color: #304060;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, .25);
+.hist-controls.bottom {
+    bottom: 0;
+    top: auto;
 }
 
-.history-item:active {
-    transform: translateY(1px);
+/* чтобы последнюю карточку не перекрывало — даём запас снизу */
+.history-list {
+    padding-bottom: 15px;
+    /* ~высота панели */
 }
 
-.history-item__meta {
-    color: var(--text);
+@media (max-width: 480px) {
+  .history-item__meta,
+  .hist-controls,
+  #histPrev,
+  #histNext {
+    font-size: 11px;
+  }
+  
+  #histPrev, #histNext {
+    min-width: 70px;
+    padding: 6px 8px;
+  }
 }
+
+.lang-switch{
+  position: absolute;
+  right: 16px;
+}
+.lang-switch select{
+  background: #0b0e15;
+  color: var(--text);
+  border: 1px solid var(--ring);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-weight: 600;
+}
+.lang-switch select:focus{ outline: 2px solid #3a66ff; outline-offset: 2px; }
