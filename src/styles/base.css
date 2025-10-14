@@ -1,0 +1,112 @@
+:root {
+    --bg: #0e0f11;
+    --panel: #15171b;
+    --text: #e8e8ea;
+    --muted: #a7aab3;
+    --accent: #4d79ff;
+    --danger: #ff5c5c;
+    --ring: #27314a;
+    --btn: #1e2127;
+    --btn-hover: #242832;
+
+    --warn: #f0b429;
+    /* amber */
+    --warn-bg: #2a2312;
+    --warn-tx: #ffd88a;
+
+    --danger: #ff5c5c;
+    --danger-bg: #2a1717;
+    --danger-tx: #ffb3b3;
+}
+
+* {
+    box-sizing: border-box
+}
+
+html,
+body {
+    height: 100%
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 24px;
+}
+
+
+.hidden {
+    display: none
+}
+
+button {
+    border: 1px solid var(--ring);
+    background: var(--btn);
+    color: var(--text);
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .04s ease, background .15s ease, border-color .15s ease;
+}
+
+button:hover {
+    background: var(--btn-hover)
+}
+
+button:active {
+    transform: translateY(1px)
+}
+
+.primary {
+    border-color: color-mix(in oklab, var(--accent) 40%, var(--ring))
+}
+
+.danger {
+    border-color: color-mix(in oklab, var(--danger) 40%, var(--ring))
+}
+
+.ghost {
+    background: transparent;
+    border-style: dashed;
+    padding: 14px 10px;
+    font-weight: 600;
+    font-size: 13px;
+    opacity: .9;
+}
+
+.ghost:hover {
+    opacity: 1;
+    background: #171a21;
+}
+
+/* разные состояния */
+.ghost.warn {
+    border-color: var(--warn);
+    color: var(--warn-tx);
+}
+
+.ghost.warn:hover {
+    background: var(--warn-bg);
+}
+
+.ghost.danger {
+    border-color: var(--danger);
+    color: var(--danger-tx);
+}
+
+.ghost.danger:hover {
+    background: var(--danger-bg);
+}
+
+.ghost:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+    border-style: solid;
+}

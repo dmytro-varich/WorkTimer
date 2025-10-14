@@ -1,0 +1,218 @@
+.app {
+    width: min(680px, 92vw);
+    height: auto;
+    padding: 28px 24px;
+    background: var(--panel);
+    border: 1px solid var(--ring);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    /* важно: контекст слоёв для .top/.bottom */
+}
+
+/* Кнопки очистки — пополам, во всю ширину сетки controls */
+.actions-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.actions-row>button {
+    width: 100%;
+}
+
+@media (max-width: 420px) {
+    .actions-row {
+        grid-template-columns: 1fr;
+    }
+
+    /* в столбик на узких */
+}
+
+.title {
+    margin: 0 0 8px;
+    font-weight: 600;
+    letter-spacing: .2px;
+    color: var(--muted);
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.time {
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(40px, 13vw, 88px);
+    text-align: center;
+    letter-spacing: 1px;
+    margin: 8px 0 6px;
+}
+
+.subrow {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 18px;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 10px 0 6px;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #111318;
+    border: 1px solid var(--ring);
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 14px;
+}
+
+.badge {
+    font-variant-numeric: tabular-nums;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #0b0e15;
+    border: 1px solid var(--ring);
+}
+
+.history {
+    margin-top: 18px;
+    border-top: 1px dashed var(--ring);
+    padding-top: 14px;
+}
+
+/* Шапка всегда поверх */
+.top {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    /* повышаем слой */
+    background: var(--panel);
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--ring);
+}
+
+/* Внутренняя область скроллится вниз и не перекрывает шапку */
+.bottom {
+    position: relative;
+    /* слой ниже шапки */
+    z-index: 1;
+
+    /* больше не делаем внутренний скролл */
+    flex: 0 0 auto;
+    /* блок просто занимает столько, сколько нужно */
+    overflow: visible;
+    padding-top: 10px;
+    /* scroll-padding-top можно убрать */
+    /* чтобы sticky-элементы не уезжали под шапку */
+}
+
+details {
+    background: #101216;
+    border: 1px solid var(--ring);
+    border-radius: 10px;
+    padding: 10px 12px;
+}
+
+/* Заголовок истории «липнет» чуть ниже шапки и не перекрывает её */
+summary {
+    position: sticky;
+    /* делаем липким внутри .bottom */
+    top: 8px;
+    /* небольшой отступ от шапки */
+    z-index: 2;
+    /* ниже .top (5), выше содержимого истории */
+    cursor: pointer;
+    color: var(--muted);
+    background: #101216;
+}
+
+/* Модалка поверх всего */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 1000;
+    /* гарантированно над остальным */
+}
+
+.modal-backdrop.is-open {
+    display: flex;
+}
+
+.modal {
+    width: min(720px, 92vw);
+    background: var(--panel);
+    border: 1px solid var(--ring);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 12px 42px rgba(0, 0, 0, .5);
+}
+
+.modal h3 {
+    margin: 0 0 8px;
+}
+
+.modal pre {
+    white-space: pre-wrap;
+    background: #0b0e15;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--ring);
+    font-size: 14px;
+    color: var(--text);
+}
+
+.modal .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    background: #0b0e15;
+    border: 1px solid var(--ring);
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform .04s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+
+.history-item:hover {
+    background: #111525;
+    border-color: #304060;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .25);
+}
+
+.history-item:active {
+    transform: translateY(1px);
+}
+
+.history-item__meta {
+    color: var(--text);
+}
