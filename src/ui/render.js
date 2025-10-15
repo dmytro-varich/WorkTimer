@@ -10,7 +10,7 @@
 
 import { fmtHMS, fmtTime, fmtDate } from '../utils/time.js';
 import { state, sumIntervals } from '../state/session.js';
-import { t } from '../i18n/lang.js';
+import { t, applyI18n } from '../i18n/lang.js';
 
 // =============================================================================
 // Helper Functions
@@ -191,8 +191,13 @@ export function renderHistory() {
 
   if (!root) return;
   if (!total) {
-    root.innerHTML = '';
-    return;
+    root.innerHTML = ` 
+      <div class="history-empty" data-i18n="history_empty"> 
+        No history yet 
+      </div> 
+    `; 
+    applyI18n(root); 
+    return; 
   }
 
   // Preserve details open state

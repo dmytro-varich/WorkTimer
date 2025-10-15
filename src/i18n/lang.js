@@ -54,6 +54,7 @@ const dict = {
     // Confirmations
     confirm_clear_today: "Clear today's history and reset today's time?",
     confirm_clear_all: "Delete ALL history and reset current session?",
+    history_empty: "No history yet",
   },
 
   uk: {
@@ -74,6 +75,7 @@ const dict = {
     history_last: (n) => `Історія (${n})`,
     prev: '◀️ Назад',
     next: 'Далі ▶️',
+    history_empty: "Історії поки немає",
 
     // Modal
     session_summary: 'Підсумок сесії',
@@ -179,4 +181,3 @@ export function applyI18n(root = document) {
     }
   });
 }
-

@@ -151,7 +151,7 @@
   margin-top: 4px;
 }
 
-.actions-row > button {
+.actions-row>button {
   width: 100%;
 }
 
@@ -213,6 +213,21 @@
   flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
+}
+
+.bottom .history-empty {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 560px;
+  padding: 0 16px;
+  text-align: center;
+  color: var(--muted-foreground, #666);
+  font-size: 0.95rem;
+  font-style: italic;
+  pointer-events: none;
 }
 
 /* =============================================================================
@@ -439,6 +454,7 @@ details[open] .carret {
    ============================================================================= */
 
 @media (max-width: 480px) {
+
   /* Reduce font sizes on mobile */
   .history-item__meta,
   .hist-controls,
@@ -454,3 +470,5 @@ details[open] .carret {
     padding: 6px 8px;
   }
 }
+
+
