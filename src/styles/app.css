@@ -1,125 +1,149 @@
 .app {
-    width: min(680px, 92vw);
-    height: auto;
-    padding: 28px 24px;
-    background: var(--panel);
-    border: 1px solid var(--ring);
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    /* контекст слоёв для .top/.bottom */
+  width: min(680px, 92vw);
+
+  /* ключ: высота карточки = высота окна – внешние отступы */
+  height: calc((var(--vh, 1vh) * 100) - (var(--page-gap) * 2));
+  max-height: calc((var(--vh, 1vh) * 100) - (var(--page-gap) * 2));
+  overflow: hidden;
+
+  /* внешний зазор задаём у карточки, а не у body */
+  margin-block: var(--page-gap);
+
+  /* чуть более гибкие отступы, чтобы не ломалось на узких экранах */
+  padding: clamp(16px, 3.5vw, 28px) clamp(14px, 3vw, 24px);
+
+  background: var(--panel);
+  border: 1px solid var(--ring);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+
+  display: flex;
+  flex-direction: column;
+  position: relative; /* контекст слоёв для .top/.bottom */
+  gap: clamp(8px, 1.8vw, 14px);
 }
 
 /* Кнопки очистки — пополам, во всю ширину сетки controls */
 .actions-row {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 4px;
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
 }
-
-.actions-row>button {
-    width: 100%;
-}
+.actions-row > button { width: 100%; }
 
 @media (max-width: 420px) {
-    .actions-row {
-        grid-template-columns: 1fr;
-    }
-
-    /* в столбик на узких */
+  .actions-row { grid-template-columns: 1fr; } /* в столбик на узких */
 }
 
 .title {
-    margin: 0 0 8px;
-    font-weight: 600;
-    letter-spacing: .2px;
-    color: var(--muted);
-    font-size: 14px;
-    text-transform: uppercase;
+  margin: 0 0 8px;
+  font-weight: 600;
+  letter-spacing: .2px;
+  color: var(--muted);
+  font-size: 14px;
+  text-transform: uppercase;
 }
 
 .time {
-    font-variant-numeric: tabular-nums;
-    font-size: clamp(40px, 13vw, 88px);
-    text-align: center;
-    letter-spacing: 1px;
-    margin: 8px 0 6px;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(40px, 13vw, 88px);
+  text-align: center;
+  letter-spacing: 1px;
+  margin: 8px 0 6px;
 }
 
 .subrow {
-    text-align: center;
-    color: var(--muted);
-    font-size: 13px;
-    margin-bottom: 18px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 18px;
 }
 
+/* сетка кнопок — адаптивно */
 .controls {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-    margin: 10px 0 6px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 10px 0 6px;
 }
+@media (max-width: 560px) { .controls { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 380px) { .controls { grid-template-columns: 1fr; } }
 
 .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border-radius: 999px;
-    background: #111318;
-    border: 1px solid var(--ring);
-    color: var(--muted);
-    font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #111318;
+  border: 1px solid var(--ring);
+  color: var(--muted);
+  font-size: 12px;
 }
 
 .row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  gap: 10px;       /* чтобы не слипалось на переносах */
+  flex-wrap: wrap; /* и не ломало ширину на узких */
 }
 
 .badge {
-    font-variant-numeric: tabular-nums;
-    padding: 2px 8px;
-    border-radius: 6px;
-    background: #0b0e15;
-    border: 1px solid var(--ring);
+  font-variant-numeric: tabular-nums;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #0b0e15;
+  border: 1px solid var(--ring);
 }
 
 .history {
-    margin-top: 18px;
-    padding-top: 5px;
+  margin-top: 5px;
+  padding-top: 5px;
 }
 
-/* Шапка всегда поверх */
+/* Шапка всегда поверх внутри карточки */
 .top {
-    position: sticky;
-    top: 0;
-    z-index: 5;
-    background: var(--panel);
-    padding-bottom: 25px;
-    border-bottom: 1px dashed var(--ring);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--panel);
+  padding-bottom: 25px;
+  border-bottom: 1px dashed var(--ring);
 }
 
-/* Основная область без внутреннего скролла */
 .bottom {
-    position: relative;
-    z-index: 1;
-    flex: 0 0 auto;
-    overflow: visible;
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;   /* ⬅️ отключили */
 }
+
+/* — было: у history-list стояли max-height и overflow:auto
+   убираем, чтобы список не прокручивался вовсе */
+.history-list {
+  display: grid;
+  gap: 8px;
+  max-height: none;   /* ⬅️ убрали ограничение */
+  overflow: visible;  /* ⬅️ убрали прокрутку */
+  padding: 6px 2px 0; /* небольшой низ без запаса под «нижнюю панель» */
+}
+
+/* на всякий случай — если где-то осталась полоса, прячем визуально */
+.history-list::-webkit-scrollbar { width: 0; height: 0; }
+.history-list { scrollbar-width: none; }
+
 
 /* ====== История: <details> ====== */
 details {
     background: #101216;
     border: 1px solid var(--ring);
     border-radius: 10px;
-    padding: 10px 12px;
+    padding: 7px 12px;
 }
 
 summary {

@@ -115,7 +115,7 @@ function renderCurrentIntervals() {
 let histPage = 0; // 0 — первая (самые свежие)
 
 function getPageSize(){
-  return window.matchMedia('(max-width: 560px)').matches ? 3 : 2;
+  return window.matchMedia('(max-width: 560px)').matches ? 4 : 1;
 }
 
 export function renderHistory() {

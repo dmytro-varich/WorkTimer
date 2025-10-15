@@ -6,6 +6,14 @@ import { modal } from './ui/modal.js';
 
 let rafId = null;
 
+function setVhVar(){
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+setVhVar();
+window.addEventListener('resize', setVhVar);
+window.addEventListener('orientationchange', setVhVar);
+
 function tick() {
   if (state.current.state !== 'running') return;
   updateUI({ withHistory: false });
