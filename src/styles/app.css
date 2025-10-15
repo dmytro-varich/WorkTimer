@@ -1,41 +1,62 @@
+/**
+ * Application Styles
+ * 
+ * Component-specific styles including:
+ * - Main app container with responsive layout
+ * - Timer display and controls
+ * - History list with pagination
+ * - Modal dialog
+ * - Language selector
+ * - Mobile responsive design
+ */
+
+/* =============================================================================
+   Main Application Container
+   ============================================================================= */
+
 .app {
   width: min(680px, 92vw);
 
-  /* ключ: высота карточки = высота окна – внешние отступы */
+  /* Card height = viewport height minus outer gaps */
   height: calc((var(--vh, 1vh) * 100) - (var(--page-gap) * 2));
   max-height: calc((var(--vh, 1vh) * 100) - (var(--page-gap) * 2));
   overflow: hidden;
 
-  /* внешний зазор задаём у карточки, а не у body */
+  /* Outer margin for spacing */
   margin-block: var(--page-gap);
 
-  /* чуть более гибкие отступы, чтобы не ломалось на узких экранах */
+  /* Responsive padding that adapts to screen size */
   padding: clamp(16px, 3.5vw, 28px) clamp(14px, 3vw, 24px);
 
+  /* Visual styling */
   background: var(--panel);
   border: 1px solid var(--ring);
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
 
+  /* Layout configuration */
   display: flex;
   flex-direction: column;
-  position: relative; /* контекст слоёв для .top/.bottom */
+  position: relative;
   gap: clamp(8px, 1.8vw, 14px);
 }
 
-/* Кнопки очистки — пополам, во всю ширину сетки controls */
-.actions-row {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 4px;
-}
-.actions-row > button { width: 100%; }
+/* =============================================================================
+   Top Section - Sticky Header with Controls
+   ============================================================================= */
 
-@media (max-width: 420px) {
-  .actions-row { grid-template-columns: 1fr; } /* в столбик на узких */
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--panel);
+  padding-bottom: 25px;
+  border-bottom: 1px dashed var(--ring);
 }
+
+/* =============================================================================
+   Title
+   ============================================================================= */
 
 .title {
   margin: 0 0 8px;
@@ -46,6 +67,34 @@
   text-transform: uppercase;
 }
 
+/* =============================================================================
+   Language Selector
+   ============================================================================= */
+
+.lang-switch {
+  position: absolute;
+  top: -5px;
+  right: 16px;
+}
+
+.lang-switch select {
+  background: #0b0e15;
+  color: var(--text);
+  border: 1px solid var(--ring);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-weight: 600;
+}
+
+.lang-switch select:focus {
+  outline: 2px solid #3a66ff;
+  outline-offset: 2px;
+}
+
+/* =============================================================================
+   Timer Display
+   ============================================================================= */
+
 .time {
   font-variant-numeric: tabular-nums;
   font-size: clamp(40px, 13vw, 88px);
@@ -54,6 +103,10 @@
   margin: 8px 0 6px;
 }
 
+/* =============================================================================
+   State Indicator Subrow
+   ============================================================================= */
+
 .subrow {
   text-align: center;
   color: var(--muted);
@@ -61,15 +114,57 @@
   margin-bottom: 18px;
 }
 
-/* сетка кнопок — адаптивно */
+/* =============================================================================
+   Control Buttons Grid - Responsive Layout
+   ============================================================================= */
+
 .controls {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   margin: 10px 0 6px;
 }
-@media (max-width: 560px) { .controls { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 380px) { .controls { grid-template-columns: 1fr; } }
+
+/* Tablet: 2 columns */
+@media (max-width: 560px) {
+  .controls {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Mobile: 1 column */
+@media (max-width: 380px) {
+  .controls {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =============================================================================
+   Clear History Buttons Row
+   ============================================================================= */
+
+.actions-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.actions-row > button {
+  width: 100%;
+}
+
+/* Stack vertically on narrow screens */
+@media (max-width: 420px) {
+  .actions-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =============================================================================
+   Pill Components
+   ============================================================================= */
 
 .pill {
   display: inline-flex;
@@ -83,14 +178,22 @@
   font-size: 12px;
 }
 
+/* =============================================================================
+   Statistics Row
+   ============================================================================= */
+
 .row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 14px;
-  gap: 10px;       /* чтобы не слипалось на переносах */
-  flex-wrap: wrap; /* и не ломало ширину на узких */
+  gap: 10px;
+  flex-wrap: wrap;
 }
+
+/* =============================================================================
+   Badge Component
+   ============================================================================= */
 
 .badge {
   font-variant-numeric: tabular-nums;
@@ -100,283 +203,254 @@
   border: 1px solid var(--ring);
 }
 
-.history {
-  margin-top: 5px;
-  padding-top: 5px;
-}
-
-/* Шапка всегда поверх внутри карточки */
-.top {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  background: var(--panel);
-  padding-bottom: 25px;
-  border-bottom: 1px dashed var(--ring);
-}
+/* =============================================================================
+   Bottom Section - Scrollable Content Area
+   ============================================================================= */
 
 .bottom {
   position: relative;
   z-index: 1;
   flex: 1 1 auto;
   min-height: 0;
-  overflow: hidden;   /* ⬅️ отключили */
+  overflow: hidden;
 }
 
-/* — было: у history-list стояли max-height и overflow:auto
-   убираем, чтобы список не прокручивался вовсе */
-.history-list {
-  display: grid;
-  gap: 8px;
-  max-height: none;   /* ⬅️ убрали ограничение */
-  overflow: visible;  /* ⬅️ убрали прокрутку */
-  padding: 6px 2px 0; /* небольшой низ без запаса под «нижнюю панель» */
+/* =============================================================================
+   History Container
+   ============================================================================= */
+
+.history {
+  margin-top: 5px;
+  padding-top: 5px;
 }
 
-/* на всякий случай — если где-то осталась полоса, прячем визуально */
-.history-list::-webkit-scrollbar { width: 0; height: 0; }
-.history-list { scrollbar-width: none; }
+#history {
+  scroll-margin-top: 24px;
+}
 
+/* =============================================================================
+   History Details - Collapsible Section
+   ============================================================================= */
 
-/* ====== История: <details> ====== */
 details {
-    background: #101216;
-    border: 1px solid var(--ring);
-    border-radius: 10px;
-    padding: 7px 12px;
+  background: #101216;
+  border: 1px solid var(--ring);
+  border-radius: 10px;
+  padding: 7px 12px;
 }
 
 summary {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    position: sticky;
-    /* липнет при прокрутке страницы */
-    top: 8px;
-    /* небольшой отступ от шапки */
-    z-index: 2;
-    /* ниже .top (5) */
-    cursor: pointer;
-    color: var(--muted);
-    background: #101216;
-    user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: sticky;
+  top: 8px;
+  z-index: 2;
+  cursor: pointer;
+  color: var(--muted);
+  background: #101216;
+  user-select: none;
 }
 
+/* Hide default marker */
 summary::-webkit-details-marker {
-    display: none;
+  display: none;
 }
 
-/* каретка у summary */
+/* Custom caret icon */
 .carret {
-    width: 8px;
-    height: 8px;
-    border-right: 2px solid var(--muted);
-    border-bottom: 2px solid var(--muted);
-    transform: rotate(-45deg);
-    transition: transform .2s ease;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(-45deg);
+  transition: transform .2s ease;
 }
 
 details[open] .carret {
-    transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
-/* панель внутри выпадашки */
+/* =============================================================================
+   History Panel
+   ============================================================================= */
+
 .hist-panel {
-    margin-top: 8px;
-    border-radius: 10px;
-    background: #101216;
-    padding: 8px;
+  margin-top: 8px;
+  border-radius: 10px;
+  background: #101216;
+  padding: 8px;
 }
 
-/* верх/низ панели со стрелками — «прилипают» внутри */
-.hist-controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    position: sticky;
-    top: 0;
-    /* верхняя полоса */
-    z-index: 1;
-    padding: 4px 0;
-    background: #101216;
-}
+/* =============================================================================
+   History List with Scrolling
+   ============================================================================= */
 
-.hist-controls.bottom {
-    top: auto;
-    bottom: 0;
-    /* нижняя полоса */
-}
-
-/* список записей: внутренний скролл, не уходит за экран */
 .history-list {
-    display: grid;
-    gap: 8px;
-    max-height: 50vh;
-    /* ограничиваем рост */
-    overflow: auto;
-    padding: 6px 2px;
+  display: grid;
+  gap: 8px;
+  max-height: 50vh;
+  overflow: auto;
+  padding: 6px 2px 15px;
 }
 
-/* аккуратный скроллбар (опционально) */
+/* Custom scrollbar styling */
 .history-list::-webkit-scrollbar {
-    width: 10px;
+  width: 10px;
 }
 
 .history-list::-webkit-scrollbar-thumb {
-    background: #27314a;
-    border-radius: 8px;
+  background: #27314a;
+  border-radius: 8px;
 }
 
+/* Firefox scrollbar */
 .history-list {
-    scrollbar-width: thin;
-    scrollbar-color: #27314a transparent;
+  scrollbar-width: thin;
+  scrollbar-color: #27314a transparent;
 }
 
-/* Firefox */
+/* =============================================================================
+   History Item Cards
+   ============================================================================= */
 
-/* элементы истории */
 .history-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    background: #0b0e15;
-    border: 1px solid var(--ring);
-    padding: 10px 12px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform .04s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  background: #0b0e15;
+  border: 1px solid var(--ring);
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform .04s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
 }
 
 .history-item:hover {
-    background: #111525;
-    border-color: #304060;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, .25);
+  background: #111525;
+  border-color: #304060;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .25);
 }
 
 .history-item:active {
-    transform: translateY(1px);
+  transform: translateY(1px);
 }
 
 .history-item__meta {
-    color: var(--text);
+  color: var(--text);
 }
 
-/* стрелки пагинации */
+/* =============================================================================
+   Pagination Controls - Sticky Positioning
+   ============================================================================= */
+
+.hist-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 4px 0;
+  background: #101216;
+}
+
+.hist-controls.bottom {
+  top: auto;
+  bottom: 0;
+}
+
+/* =============================================================================
+   Pagination Buttons
+   ============================================================================= */
+
 #histPrev,
 #histNext,
 #histPrev2,
 #histNext2 {
-    min-width: 92px;
+  min-width: 92px;
 }
 
 #histPrev:disabled,
 #histNext:disabled,
 #histPrev2:disabled,
 #histNext2:disabled {
-    opacity: .5;
-    cursor: not-allowed;
+  opacity: .5;
+  cursor: not-allowed;
 }
 
-/* небольшой запас при прокрутке к #history */
-#history {
-    scroll-margin-top: 24px;
-}
+/* =============================================================================
+   Modal Backdrop Overlay
+   ============================================================================= */
 
-/* ====== Модалка поверх всего ====== */
 .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, .55);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    z-index: 1000;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 1000;
 }
 
 .modal-backdrop.is-open {
-    display: flex;
+  display: flex;
 }
 
+/* =============================================================================
+   Modal Dialog Box
+   ============================================================================= */
+
 .modal {
-    width: min(720px, 92vw);
-    background: var(--panel);
-    border: 1px solid var(--ring);
-    border-radius: 14px;
-    padding: 18px;
-    box-shadow: 0 12px 42px rgba(0, 0, 0, .5);
+  width: min(720px, 92vw);
+  background: var(--panel);
+  border: 1px solid var(--ring);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 12px 42px rgba(0, 0, 0, .5);
 }
 
 .modal h3 {
-    margin: 0 0 8px;
+  margin: 0 0 8px;
 }
 
 .modal pre {
-    white-space: pre-wrap;
-    background: #0b0e15;
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid var(--ring);
-    font-size: 14px;
-    color: var(--text);
+  white-space: pre-wrap;
+  background: #0b0e15;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--ring);
+  font-size: 14px;
+  color: var(--text);
 }
 
 .modal .actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
 }
 
-.hist-controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    position: sticky;
-    z-index: 1;
-    padding: 4px 0;
-    background: #101216;
-}
-
-.hist-controls.bottom {
-    bottom: 0;
-    top: auto;
-}
-
-/* чтобы последнюю карточку не перекрывало — даём запас снизу */
-.history-list {
-    padding-bottom: 15px;
-    /* ~высота панели */
-}
+/* =============================================================================
+   Mobile Responsive Design
+   ============================================================================= */
 
 @media (max-width: 480px) {
+  /* Reduce font sizes on mobile */
   .history-item__meta,
   .hist-controls,
   #histPrev,
   #histNext {
     font-size: 11px;
   }
-  
-  #histPrev, #histNext {
+
+  /* Smaller pagination buttons */
+  #histPrev,
+  #histNext {
     min-width: 70px;
     padding: 6px 8px;
   }
 }
-
-.lang-switch{
-  position: absolute;
-  top: -5px;
-  right: 16px;
-}
-.lang-switch select{
-  background: #0b0e15;
-  color: var(--text);
-  border: 1px solid var(--ring);
-  border-radius: 8px;
-  padding: 6px 10px;
-  font-weight: 600;
-}
-.lang-switch select:focus{ outline: 2px solid #3a66ff; outline-offset: 2px; }

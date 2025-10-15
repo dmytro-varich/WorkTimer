@@ -9,11 +9,19 @@
   <link rel="stylesheet" href="./src/styles/app.css" />
 </head>
 <body>
+  <!-- ========================================================================
+       Main Application Container
+       ======================================================================== -->
   <main class="app" role="application" aria-label="WorkTimer">
+    
+    <!-- ======================================================================
+         Top Section: Controls and Status
+         ====================================================================== -->
     <section class="top">
+      <!-- Application Title -->
       <p class="title">WorkTimer</p>
 
-      <!-- language switch -->
+      <!-- Language Selector -->
       <div class="lang-switch">
         <label for="langSelect" class="sr-only">Language</label>
         <select id="langSelect" aria-label="Language">
@@ -22,8 +30,10 @@
         </select>
       </div>
 
+      <!-- Timer Display -->
       <div class="time" id="display">00:00:00</div>
 
+      <!-- State Indicator -->
       <div class="subrow">
         <span class="pill">
           <span id="stateDot">●</span>
@@ -31,31 +41,38 @@
         </span>
       </div>
 
+      <!-- Control Buttons -->
       <div class="controls">
+        <!-- Play/Pause Button -->
         <button id="playPauseBtn"
                 class="primary"
                 data-i18n="play"
                 data-i18n-attr='{"aria-label":"play"}'
                 aria-label="Play">▶️ Play</button>
 
+        <!-- Stop Button -->
         <button id="stopBtn"
                 class="danger"
                 data-i18n="stop"
                 data-i18n-attr='{"aria-label":"stop"}'
                 aria-label="Stop">■ Stop</button>
 
+        <!-- Reset Button -->
         <button id="resetBtn"
                 data-i18n="reset"
                 data-i18n-attr='{"aria-label":"reset"}'
                 aria-label="Reset">↺ Reset</button>
 
+        <!-- Clear History Buttons -->
         <div class="actions-row">
+          <!-- Clear Today Button -->
           <button id="clearTodayBtn"
                   class="ghost warn"
                   data-i18n="clearToday"
                   data-i18n-attr='{"aria-label":"clearToday"}'
                   aria-label="Clear today">✖️ Clear today</button>
 
+          <!-- Clear All Button -->
           <button id="clearAllBtn"
                   class="ghost danger"
                   data-i18n="clearAll"
@@ -64,29 +81,46 @@
         </div>
       </div>
 
+      <!-- Statistics Row -->
       <div class="row">
+        <!-- Today's Total -->
         <div class="pill">
           <span id="todayLabel" data-i18n="today">Today</span>:
           <span class="badge" id="todayTotal">00:00:00</span>
         </div>
+        
+        <!-- Interval Count -->
         <div class="pill">
           <span id="intervalsLabel" data-i18n="intervals">Intervals</span>:
           <span class="badge" id="intervalCount">0</span>
         </div>
       </div>
-
     </section>
 
+    <!-- ======================================================================
+         Bottom Section: History
+         ====================================================================== -->
     <section class="bottom">
       <section class="history" id="history"></section>
     </section>
   </main>
 
-  <!-- Modal -->
-  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <!-- ========================================================================
+       Session Summary Modal
+       ======================================================================== -->
+  <div class="modal-backdrop" 
+       id="modalBackdrop" 
+       role="dialog" 
+       aria-modal="true" 
+       aria-labelledby="modalTitle">
     <div class="modal">
+      <!-- Modal Title -->
       <h3 id="modalTitle" data-i18n="session_summary">Session summary</h3>
+      
+      <!-- Summary Text -->
       <pre id="summaryText"></pre>
+      
+      <!-- Modal Actions -->
       <div class="actions">
         <button id="copyBtn" class="primary" data-i18n="copy">Copy</button>
         <button id="closeModalBtn" data-i18n="close">Close</button>
@@ -94,7 +128,10 @@
     </div>
   </div>
 
-  <!-- один модуль подключает всё остальное -->
+  <!-- ========================================================================
+       Application Script (ES6 Module)
+       ======================================================================== -->
   <script type="module" src="./src/main.js" defer></script>
 </body>
 </html>
+
