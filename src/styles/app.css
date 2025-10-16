@@ -18,6 +18,7 @@
   margin: auto;
   width: min(680px, 92vw);
   max-height: 95vh;
+  min-height: 70vh;
   overflow: hidden;
 
   /* Outer spacing */
