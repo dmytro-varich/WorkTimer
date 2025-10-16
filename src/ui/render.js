@@ -178,7 +178,7 @@ let histPage = 0; // Current page (0-indexed)
  * @returns {number} Number of items per page
  */
 function getPageSize() {
-  return window.matchMedia('(max-width: 560px)').matches ? 4 : 1;
+  return window.matchMedia('(max-width: 560px)').matches ? 4 : 5;
 }
 
 /**
@@ -208,7 +208,8 @@ export function renderHistory() {
   histPage = Math.max(0, Math.min(histPage, pages - 1));
 
   const start = histPage * getPageSize();
-  const pageItems = all.slice(start, start + getPageSize());
+  // const pageItems = all.slice(start, start + getPageSize());
+  const pageItems = all;
 
   root.innerHTML = `
     <details ${wasOpen ? 'open' : ''} id="histDetails">

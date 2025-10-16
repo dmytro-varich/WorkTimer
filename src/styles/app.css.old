@@ -40,7 +40,7 @@
   gap: clamp(8px, 1.8vw, 14px);
 }
 
-@media (max-width: 540px) {
+@media (max-height: 380px) {
   .app {
     padding-top: 3%;
   }
@@ -485,6 +485,480 @@ details[open] .carret {
    ============================================================================= */
 
 @media (max-width: 480px) {
+  /* Reduce font sizes on mobile */
+  .history-item__meta,
+  .hist-controls,
+  #histPrev,
+  #histNext {
+    font-size: 11px;
+  }
+
+  /* Smaller pagination buttons */
+  #histPrev,
+  #histNext {
+    min-width: 70px;
+    padding: 6px 8px;
+  }
+}
+
+
+/* =============================================================================
+   Top Section - Sticky Header with Controls
+   ============================================================================= */
+
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--panel);
+  padding-bottom: 25px;
+  border-bottom: 1px dashed var(--ring);
+}
+
+/* =============================================================================
+   Title
+   ============================================================================= */
+
+.title {
+  margin: 0 0 8px;
+  font-weight: 600;
+  letter-spacing: .2px;
+  color: var(--muted);
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+/* =============================================================================
+   Language Selector
+   ============================================================================= */
+
+.lang-switch {
+  position: absolute;
+  top: -5px;
+  right: 16px;
+}
+
+.lang-switch select {
+  background: #0b0e15;
+  color: var(--text);
+  border: 1px solid var(--ring);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-weight: 600;
+}
+
+.lang-switch select:focus {
+  outline: 2px solid #3a66ff;
+  outline-offset: 2px;
+}
+
+/* =============================================================================
+   Timer Display
+   ============================================================================= */
+
+.time {
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(40px, 13vw, 88px);
+  text-align: center;
+  letter-spacing: 1px;
+  margin: 8px 0 6px;
+}
+
+/* =============================================================================
+   State Indicator Subrow
+   ============================================================================= */
+
+.subrow {
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 18px;
+}
+
+/* =============================================================================
+   Control Buttons Grid - Responsive Layout
+   ============================================================================= */
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 10px 0 6px;
+}
+
+/* Tablet: 2 columns */
+@media (max-width: 560px) {
+  .controls {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Mobile: 1 column */
+@media (max-width: 380px) {
+  .controls {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =============================================================================
+   Clear History Buttons Row
+   ============================================================================= */
+
+.actions-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.actions-row>button {
+  width: 100%;
+}
+
+/* Stack vertically on narrow screens */
+@media (max-width: 420px) {
+  .actions-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =============================================================================
+   Pill Components
+   ============================================================================= */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #111318;
+  border: 1px solid var(--ring);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* =============================================================================
+   Statistics Row
+   ============================================================================= */
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* =============================================================================
+   Badge Component
+   ============================================================================= */
+
+.badge {
+  font-variant-numeric: tabular-nums;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #0b0e15;
+  border: 1px solid var(--ring);
+}
+
+/* =============================================================================
+   Bottom Section - Scrollable Content Area
+   ============================================================================= */
+
+.bottom {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* =============================================================================
+   History Container
+   ============================================================================= */
+
+.bottom .history-empty {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 560px;
+  padding: 0 16px;
+  text-align: center;
+  color: var(--muted-foreground, #666);
+  font-size: 0.95rem;
+  font-style: italic;
+  pointer-events: none;
+}
+
+.history {
+  margin-top: 5px;
+  padding-top: 5px;
+}
+
+/* #history {
+  scroll-margin-top: 24px;
+} */
+
+#history {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+/* =============================================================================
+   History Details - Collapsible Section
+   ============================================================================= */
+
+details {
+  background: #101216;
+  border: 1px solid var(--ring);
+  border-radius: 10px;
+  padding: 7px 12px;
+}
+
+#history>details {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  /* критично для внутреннего скролла */
+}
+
+summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: sticky;
+  top: 8px;
+  z-index: 2;
+  cursor: pointer;
+  color: var(--muted);
+  background: #101216;
+  user-select: none;
+}
+
+/* Hide default marker */
+summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Custom caret icon */
+.carret {
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(-45deg);
+  transition: transform .2s ease;
+}
+
+details[open] .carret {
+  transform: rotate(45deg);
+}
+
+/* =============================================================================
+   History Panel
+   ============================================================================= */
+
+.hist-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1 1 auto;
+  margin-top: 8px;
+  border-radius: 10px;
+  background: #101216;
+  padding: 8px;
+  overflow: hidden;
+}
+
+/* =============================================================================
+   History List with Scrolling
+   ============================================================================= */
+
+/* .history-list {
+  display: grid;
+  gap: 8px;
+  max-height: 50vh;
+  overflow: auto;
+  padding: 6px 2px 15px;
+} */
+
+.history-list,
+#historyList {
+  display: grid;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 120px;
+
+  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+
+  padding: 6px 2px 15px;
+}
+
+/* Custom scrollbar styling */
+.history-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+  background: #27314a;
+  border-radius: 8px;
+}
+
+.history-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Firefox scrollbar */
+.history-list {
+  scrollbar-width: thin;
+  scrollbar-color: #27314a transparent;
+}
+
+/* =============================================================================
+   History Item Cards
+   ============================================================================= */
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  background: #0b0e15;
+  border: 1px solid var(--ring);
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform .04s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+
+.history-item:hover {
+  background: #111525;
+  border-color: #304060;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .25);
+}
+
+.history-item:active {
+  transform: translateY(1px);
+}
+
+.history-item__meta {
+  color: var(--text);
+}
+
+/* =============================================================================
+   Pagination Controls - Sticky Positioning
+   ============================================================================= */
+
+.hist-controls {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 4px 0;
+  background: #101216;
+}
+
+.hist-controls.bottom {
+  top: auto;
+  bottom: 0;
+}
+
+/* =============================================================================
+   Pagination Buttons
+   ============================================================================= */
+
+#histPrev,
+#histNext,
+#histPrev2,
+#histNext2 {
+  min-width: 92px;
+}
+
+#histPrev:disabled,
+#histNext:disabled,
+#histPrev2:disabled,
+#histNext2:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* =============================================================================
+   Modal Backdrop Overlay
+   ============================================================================= */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 1000;
+}
+
+.modal-backdrop.is-open {
+  display: flex;
+}
+
+/* =============================================================================
+   Modal Dialog Box
+   ============================================================================= */
+
+.modal {
+  width: min(720px, 92vw);
+  background: var(--panel);
+  border: 1px solid var(--ring);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 12px 42px rgba(0, 0, 0, .5);
+}
+
+.modal h3 {
+  margin: 0 0 8px;
+}
+
+.modal pre {
+  white-space: pre-wrap;
+  background: #0b0e15;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--ring);
+  font-size: 14px;
+  color: var(--text);
+}
+
+.modal .actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* =============================================================================
+   Mobile Responsive Design
+   ============================================================================= */
+
+@media (max-width: 480px) {
+
   /* Reduce font sizes on mobile */
   .history-item__meta,
   .hist-controls,

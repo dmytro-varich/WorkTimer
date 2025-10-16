@@ -29,9 +29,9 @@ body {
   background: var(--bg);
   color: var(--text);
   font: 16px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-
+  place-items: center;
   /* фиксируем высоту страницы под окно и отключаем внешний скролл */
-  min-height: calc(var(--vh, 1vh) * 100);
+  min-height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -44,6 +44,10 @@ body {
 /* Современные браузеры — более точная единица высоты */
 @supports (height: 1svh) {
   body { min-height: 100svh; }
+}
+
+body {
+  place-items: center;
 }
 
 .hidden { display: none; }
