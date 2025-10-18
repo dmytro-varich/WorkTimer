@@ -60,6 +60,11 @@
   border-bottom: 1px dashed var(--ring);
 }
 
+.top-container {
+  display: flex;
+  justify-content: space-between;
+}
+
 /* =============================================================================
    Title
    ============================================================================= */
@@ -76,12 +81,6 @@
 /* =============================================================================
    Language Selector
    ============================================================================= */
-
-.lang-switch {
-  position: absolute;
-  top: -5px;
-  right: 16px;
-}
 
 .lang-switch select {
   background: #0b0e15;
@@ -157,7 +156,7 @@
   margin-top: 4px;
 }
 
-.actions-row > button {
+.actions-row>button {
   width: 100%;
 }
 
@@ -264,7 +263,7 @@ details {
   padding: 7px 12px;
 }
 
-#history > details {
+#history>details {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -486,6 +485,7 @@ details[open] .carret {
    ============================================================================= */
 
 @media (max-width: 480px) {
+
   /* Reduce font sizes on mobile */
   .history-item__meta,
   .hist-controls,

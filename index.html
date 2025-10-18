@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,26 +9,29 @@
   <link rel="stylesheet" href="./src/styles/base.css" />
   <link rel="stylesheet" href="./src/styles/app.css" />
 </head>
+
 <body>
   <!-- ========================================================================
        Main Application Container
        ======================================================================== -->
   <main class="app" role="application" aria-label="WorkTimer">
-    
+
     <!-- ======================================================================
          Top Section: Controls and Status
          ====================================================================== -->
     <section class="top">
-      <!-- Application Title -->
-      <p class="title">WorkTimer</p>
+      <div class="top-container">
+        <!-- Application Title -->
+        <p class="title">WorkTimer</p>
 
-      <!-- Language Selector -->
-      <div class="lang-switch">
-        <!-- <label for="langSelect" class="sr-only">Language</label> -->
-        <select id="langSelect" aria-label="Language">
-          <option value="en">EN</option>
-          <option value="uk">UA</option>
-        </select>
+        <!-- Language Selector -->
+        <div class="lang-switch">
+          <!-- <label for="langSelect" class="sr-only">Language</label> -->
+          <select id="langSelect" aria-label="Language">
+            <option value="en">EN</option>
+            <option value="uk">UA</option>
+          </select>
+        </div>
       </div>
 
       <!-- Timer Display -->
@@ -44,40 +48,26 @@
       <!-- Control Buttons -->
       <div class="controls">
         <!-- Play/Pause Button -->
-        <button id="playPauseBtn"
-                class="primary"
-                data-i18n="play"
-                data-i18n-attr='{"aria-label":"play"}'
-                aria-label="Play">▶️ Play</button>
+        <button id="playPauseBtn" class="primary" data-i18n="play" data-i18n-attr='{"aria-label":"play"}'
+          aria-label="Play">▶️ Play</button>
 
         <!-- Stop Button -->
-        <button id="stopBtn"
-                class="danger"
-                data-i18n="stop"
-                data-i18n-attr='{"aria-label":"stop"}'
-                aria-label="Stop">■ Stop</button>
+        <button id="stopBtn" class="danger" data-i18n="stop" data-i18n-attr='{"aria-label":"stop"}' aria-label="Stop">■
+          Stop</button>
 
         <!-- Reset Button -->
-        <button id="resetBtn"
-                data-i18n="reset"
-                data-i18n-attr='{"aria-label":"reset"}'
-                aria-label="Reset">↺ Reset</button>
+        <button id="resetBtn" data-i18n="reset" data-i18n-attr='{"aria-label":"reset"}' aria-label="Reset">↺
+          Reset</button>
 
         <!-- Clear History Buttons -->
         <div class="actions-row">
           <!-- Clear Today Button -->
-          <button id="clearTodayBtn"
-                  class="ghost warn"
-                  data-i18n="clearToday"
-                  data-i18n-attr='{"aria-label":"clearToday"}'
-                  aria-label="Clear today">✖️ Clear today</button>
+          <button id="clearTodayBtn" class="ghost warn" data-i18n="clearToday"
+            data-i18n-attr='{"aria-label":"clearToday"}' aria-label="Clear today">✖️ Clear today</button>
 
           <!-- Clear All Button -->
-          <button id="clearAllBtn"
-                  class="ghost danger"
-                  data-i18n="clearAll"
-                  data-i18n-attr='{"aria-label":"clearAll"}'
-                  aria-label="Clear all">🗑️ Clear all</button>
+          <button id="clearAllBtn" class="ghost danger" data-i18n="clearAll" data-i18n-attr='{"aria-label":"clearAll"}'
+            aria-label="Clear all">🗑️ Clear all</button>
         </div>
       </div>
 
@@ -88,7 +78,7 @@
           <span id="todayLabel" data-i18n="today">Today</span>:
           <span class="badge" id="todayTotal">00:00:00</span>
         </div>
-        
+
         <!-- Interval Count -->
         <div class="pill">
           <span id="intervalsLabel" data-i18n="intervals">Intervals</span>:
@@ -108,18 +98,14 @@
   <!-- ========================================================================
        Session Summary Modal
        ======================================================================== -->
-  <div class="modal-backdrop" 
-       id="modalBackdrop" 
-       role="dialog" 
-       aria-modal="true" 
-       aria-labelledby="modalTitle">
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal">
       <!-- Modal Title -->
       <h3 id="modalTitle" data-i18n="session_summary">Session summary</h3>
-      
+
       <!-- Summary Text -->
       <pre id="summaryText"></pre>
-      
+
       <!-- Modal Actions -->
       <div class="actions">
         <button id="copyBtn" class="primary" data-i18n="copy">Copy</button>
@@ -133,5 +119,5 @@
        ======================================================================== -->
   <script type="module" src="./src/main.js" defer></script>
 </body>
-</html>
 
+</html>
