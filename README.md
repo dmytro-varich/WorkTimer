@@ -2,7 +2,7 @@
 
 ![Worktimer Intro](.github/assets/worktimer_intro.png)
 
-[WorkTimer](https://dmytro-varich.github.io/WorkTimer/) is a web time tracker that tracks work sessions with `play`/`pause`/`stop`/`reset`, automatically logs intervals, keeps a persistent history, supports a multilingual and accessible UI, and generates one‑click copyable summaries 💼. ]
+[WorkTimer](https://dmytro-varich.github.io/WorkTimer/) is a web time tracker that tracks work sessions with `play`/`pause`/`stop`/`reset`, automatically logs intervals, keeps a persistent history, supports a multilingual and accessible UI, and generates one‑click copyable summaries 💼. 
 
 ## ✨ Features
 
